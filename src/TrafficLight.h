@@ -4,6 +4,7 @@
 #include <mutex>
 #include <deque>
 #include <condition_variable>
+#include <mutex>
 #include "TrafficObject.h"
 
 // forward declarations to avoid include cycle
@@ -19,9 +20,12 @@ template <class T>
 class MessageQueue
 {
 public:
-
+    void send(T &&msg);
+    T receive();
 private:
-    
+    std::deque<T> _queue;
+    std::condition_variable _cond;
+    std::mutex _mutex;
 };
 
 // FP.1 : Define a class „TrafficLight“ which is a child class of TrafficObject. 
