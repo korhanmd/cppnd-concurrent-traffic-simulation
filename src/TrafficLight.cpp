@@ -36,6 +36,7 @@ void TrafficLight::waitForGreen()
     // runs and repeatedly calls the receive function on the message queue. 
     // Once it receives TrafficLightPhase::green, the method returns.
 }
+*/
 
 TrafficLightPhase TrafficLight::getCurrentPhase()
 {
@@ -45,8 +46,9 @@ TrafficLightPhase TrafficLight::getCurrentPhase()
 void TrafficLight::simulate()
 {
     // FP.2b : Finally, the private method „cycleThroughPhases“ should be started in a thread when the public method „simulate“ is called. To do this, use the thread queue in the base class. 
+    threads.emplace_back(std::thread(&TrafficLight::cycleThroughPhases, this));
 }
-*/
+
 // virtual function which is executed in a thread
 void TrafficLight::cycleThroughPhases()
 {
