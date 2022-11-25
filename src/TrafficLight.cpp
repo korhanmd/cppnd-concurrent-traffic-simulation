@@ -1,6 +1,7 @@
 #include <iostream>
 #include <random>
 #include <chrono>
+#include <future>
 #include "TrafficLight.h"
 
 /* Implementation of class "MessageQueue" */
@@ -74,6 +75,9 @@ void TrafficLight::cycleThroughPhases()
         if (std::chrono::duration_cast<std::chrono::milliseconds>(time_diff).count() > cycle_duration) {
             if (_currentPhase == TrafficLightPhase::red) _currentPhase = TrafficLightPhase::green;
             else _currentPhase = TrafficLightPhase::red;
+
+            std::future<void> ftr = std::async(std::launch::async, &MessageQueue<TrafficLightPhase>::send, &_messageQueue, std::move(_currentPhase));
+            ftr.wait();
 
             last_time = std::chrono::high_resolution_clock::now();
         }
